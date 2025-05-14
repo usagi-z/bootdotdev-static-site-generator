@@ -1,5 +1,5 @@
 import unittest
-from src.htmlnode import HTMLNode, LeafNode
+from src.htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_props1(self):
@@ -33,6 +33,28 @@ class TestHTMLNode(unittest.TestCase):
         node = LeafNode(None, "Click me!")
         self.assertEqual(node.to_html(), "Click me!")
 
+    def test_parent_to_html_1(self):
+        node = ParentNode('p',
+                          [
+                              LeafNode('b', 'Bold text'),
+                              LeafNode(None, 'Normal text'),
+                              LeafNode('i', 'italic text'),
+                              LeafNode(None, 'Normal text'),
+                          ])
+        rendering = "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>"
+        self.assertEqual(node.to_html(), rendering)
+    def test_parent_to_html_2(self):
+        child_node = LeafNode("span", "child")
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
+    def test_parent_to_html_3(self):
+        grandchild_node = LeafNode("b", "grandchild")
+        child_node = ParentNode("span", [grandchild_node])
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(
+            parent_node.to_html(),
+            "<div><span><b>grandchild</b></span></div>",
+        )
 
 if __name__ == "__main__":
     unittest.main()
