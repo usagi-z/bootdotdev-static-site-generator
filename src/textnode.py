@@ -1,9 +1,8 @@
 from enum import Enum
-from typing import override
 
 
 class TextType(Enum):
-    NORMAL = "normal"
+    TEXT = "text"
     BOLD = "bold"
     ITALIC = "italic"
     CODE = "code"
@@ -21,3 +20,4 @@ class TextNode:
                 self.url == other.url)
     def __repr__(self) -> str:
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
+

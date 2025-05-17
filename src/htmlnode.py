@@ -1,14 +1,5 @@
-from enum import Enum
-from typing import override
+from src.textnode import TextNode, TextType
 
-
-class TextType(Enum):
-    NORMAL = "normal"
-    BOLD = "bold"
-    ITALIC = "italic"
-    CODE = "code"
-    LINK = "link"
-    IMAGE = "image"
 
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
@@ -51,3 +42,26 @@ class ParentNode(HTMLNode):
         else:
             children = ''.join(map(lambda c: c.to_html(), self.children))
             return f"<{self.tag}{self.props_to_html()}>{children}</{self.tag}>"
+
+
+
+def text_node_to_html_node(text_node: TextNode):
+    match text_node.text_type:
+        case TextType.TEXT:
+            return LeafNode(None, text_node.text)
+        case TextType.BOLD:
+            return LeafNode('b', text_node.text)
+        case TextType.ITALIC:
+            return LeafNode('i', text_node.text)
+        case TextType.CODE:
+            return LeafNode('code', text_node.text)
+        case TextType.LINK:
+            return LeafNode('a', text_node.text, { "href": text_node.url})
+        case TextType.IMAGE:
+            return LeafNode('img', '', {
+                "src": text_node.url,
+                "alt": text_node.text
+            })
+        case _:
+            raise Exception("invalid TextType")
+

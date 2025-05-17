@@ -1,5 +1,6 @@
 import unittest
-from src.htmlnode import HTMLNode, LeafNode, ParentNode
+from src.htmlnode import HTMLNode, LeafNode, ParentNode, text_node_to_html_node
+from src.textnode import TextNode, TextType
 
 class TestHTMLNode(unittest.TestCase):
     def test_props1(self):
@@ -55,6 +56,31 @@ class TestHTMLNode(unittest.TestCase):
             parent_node.to_html(),
             "<div><span><b>grandchild</b></span></div>",
         )
+
+    def test_text_1(self):
+        node = TextNode('This is a text node', TextType.TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+    def test_text_2(self):
+        node = TextNode('This is a bold text node', TextType.BOLD)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, 'b')
+        self.assertEqual(html_node.value, "This is a bold text node")
+    def test_text_3(self):
+        node = TextNode('This is a link node', TextType.LINK, "https://example.com")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, 'a')
+        self.assertEqual(html_node.value, "This is a link node")
+        self.assertEqual(html_node.props["href"], "https://example.com")
+    def test_text_4(self):
+        node = TextNode('This is a image node', TextType.IMAGE, "https://example.com/i.jpg")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "img")
+        self.assertEqual(html_node.value, "")
+        self.assertEqual(html_node.props["src"], "https://example.com/i.jpg")
+        self.assertEqual(html_node.props["alt"], 'This is a image node')
+
 
 if __name__ == "__main__":
     unittest.main()
