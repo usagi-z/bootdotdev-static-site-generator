@@ -64,4 +64,3 @@ def text_node_to_html_node(text_node: TextNode):
             })
         case _:
             raise Exception("invalid TextType")
-
