@@ -21,3 +21,17 @@ class TestTextToTextNodes(unittest.TestCase):
             TextNode("link", TextType.LINK, "https://boot.dev"),
         ]
         self.assertListEqual(nodes, result)
+    def test_2(self):
+        text = "This is a **_bold_** text with underscores"
+        result = text_to_textnodes(text)
+        nodes = [
+            TextNode("This is a ", TextType.TEXT),
+            TextNode("_bold_", TextType.BOLD),
+            TextNode(" text with underscores", TextType.TEXT),
+        ]
+        self.assertListEqual(nodes, result)
+    def test_3(self):
+        with self.assertRaises(Exception):
+            text = "This is a `**_code_**` text with underscores and earmuffs"
+            text_to_textnodes(text)
+
