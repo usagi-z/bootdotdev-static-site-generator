@@ -1,7 +1,7 @@
 import unittest
 
-from src.split_nodes import split_nodes_image, split_nodes_link
-from src.textnode import TextNode, TextType
+from split_nodes import split_nodes_image, split_nodes_link
+from textnode import TextNode, TextType
 
 class TestSplitNodes(unittest.TestCase):
     def test_image_1(self):
@@ -12,7 +12,7 @@ class TestSplitNodes(unittest.TestCase):
         new_nodes = split_nodes_image([node])
         self.assertEqual(
             [
-                TextNode("This is text with an ", TextType.TEXT, None),
+                TextNode("This is text with an ", TextType.TEXT),
                 TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
                 TextNode(" and another ", TextType.TEXT),
                 TextNode(

@@ -1,4 +1,4 @@
-from src.textnode import TextNode, TextType
+from textnode import TextNode, TextType
 
 
 class HTMLNode:

@@ -1,7 +1,7 @@
 import unittest
 
-from src.extract_links import extract_markdown_images, extract_markdown_links
-from src.textnode import TextNode, TextType
+from extract_links import extract_markdown_images, extract_markdown_links
+from textnode import TextNode, TextType
 
 class TestExtractLinks(unittest.TestCase):
     def test_1(self):
