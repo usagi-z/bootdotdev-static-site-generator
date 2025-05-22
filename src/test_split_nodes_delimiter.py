@@ -5,7 +5,6 @@ from src.textnode import TextNode, TextType
 
 class TestSplitNodesDelimiter(unittest.TestCase):
     def test_1(self):
-        # node = TextNode("This is text with a `code block` word", TextType.TEXT)
         node = TextNode("a`b`c", TextType.TEXT)
         result_nodes = [
             TextNode('a', TextType.TEXT),
