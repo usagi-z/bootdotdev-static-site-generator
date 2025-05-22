@@ -20,5 +20,4 @@ class TestTextToTextNodes(unittest.TestCase):
             TextNode(" and a ", TextType.TEXT),
             TextNode("link", TextType.LINK, "https://boot.dev"),
         ]
-        self.maxDiff = None
         self.assertListEqual(nodes, result)
