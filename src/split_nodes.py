@@ -3,6 +3,8 @@ from textnode import TextNode, TextType
 
 def split_nodes_image(old_nodes):
     def split_node_image(node):
+        if node.text_type != TextType.TEXT:
+            return [node]
         text = node.text
         imgs = extract_markdown_images(text)
         r = list()
@@ -26,6 +28,8 @@ def split_nodes_image(old_nodes):
 
 def split_nodes_link(old_nodes):
     def split_node_link(node):
+        if node.text_type != TextType.TEXT:
+            return [node]
         text = node.text
         links = extract_markdown_links(text)
         r = list()
