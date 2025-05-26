@@ -35,3 +35,6 @@ class TestTextToTextNodes(unittest.TestCase):
             text = "This is a `**_code_**` text with underscores and earmuffs"
             text_to_textnodes(text)
 
+
+if __name__ == "__main__":
+    unittest.main()
