@@ -16,7 +16,7 @@ class HTMLNode:
             format_pair = lambda p: p[0] + "=" + '"' + p[1] + '"'
             pairs = self.props.items()
             pairs = map(format_pair, pairs)
-            return " " + " ".join(list(pairs))
+            return " " + " ".join(pairs)
         else:
             return ""
 
@@ -43,12 +43,13 @@ class ParentNode(HTMLNode):
             children = ''.join(map(lambda c: c.to_html(), self.children))
             return f"<{self.tag}{self.props_to_html()}>{children}</{self.tag}>"
 
-
+def collapse_newlines(text):
+    return text.replace("\n", " ")
 
 def text_node_to_html_node(text_node: TextNode):
     match text_node.text_type:
         case TextType.TEXT:
-            return LeafNode(None, text_node.text)
+            return LeafNode(None, collapse_newlines(text_node.text))
         case TextType.BOLD:
             return LeafNode('b', text_node.text)
         case TextType.ITALIC:

@@ -1,6 +1,6 @@
 import unittest
 
-from src.blocks import BlockType, block_to_block_type
+from blocks import BlockType, block_to_block_type
 
 
 class TestBlocks(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestBlocks(unittest.TestCase):
         block = "####### foobar"
         self.assertEqual(block_to_block_type(block), BlockType.PARAGRAPH)
     def test_block_to_block_type_3(self):
-        block = "```foobar\nfoobaz\n```"
+        block = "```\nfoobar\nfoobaz\n```"
         self.assertEqual(block_to_block_type(block), BlockType.CODE)
     def test_block_to_block_type_4(self):
         block = "```foobar\nfoobaz"

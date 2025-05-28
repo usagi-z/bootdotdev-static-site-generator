@@ -14,7 +14,7 @@ class BlockType(Enum):
 def block_to_block_type(block):
     if re.match(r"^#{1,6} ", block):
         return BlockType.HEADING
-    elif re.search(r"^```", block) and re.search(r"```$", block):
+    elif re.search(r"^```\n", block) and re.search(r"\n```$", block):
         return BlockType.CODE
     elif is_quote_block(block):
         return BlockType.QUOTE
