@@ -42,8 +42,8 @@ the **same** even with inline stuff
                          )
     def test_4(self):
         md = """
->this is
->a quote
+> this is
+> a quote
 """
         node = markdown_to_html_node(md)
         self.assertEqual(node.to_html(),

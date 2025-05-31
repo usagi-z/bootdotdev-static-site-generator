@@ -30,12 +30,16 @@ def markdown_to_html_node(markdown):
                 children.append(LeafNode('blockquote', extract_quote(block)))
             case BlockType.UNORDERED_LIST:
                 items = extract_unordered_list_items(block)
-                wrap_in_li = lambda item: LeafNode('li', item)
+                htmlize_item = lambda item: list(map(text_node_to_html_node, text_to_textnodes(item)))
+                items = map(htmlize_item, items)
+                wrap_in_li = lambda item_children: ParentNode('li', children=item_children)
                 item_nodes = list(map(wrap_in_li, items))
                 children.append(ParentNode('ul', children=item_nodes))
             case BlockType.ORDERED_LIST:
                 items = extract_ordered_list_items(block)
-                wrap_in_li = lambda item: LeafNode('li', item)
+                htmlize_item = lambda item: list(map(text_node_to_html_node, text_to_textnodes(item)))
+                items = map(htmlize_item, items)
+                wrap_in_li = lambda item_children: ParentNode('li', item_children)
                 item_nodes = list(map(wrap_in_li, items))
                 children.append(ParentNode('ol', children=item_nodes))
     return ParentNode('div', children=children)
@@ -50,7 +54,7 @@ def extract_code(block):
     return block.removeprefix("```\n").removesuffix("```")
 
 def extract_quote(block: str):
-    remove_quote_mark = lambda line: line.removeprefix('>')
+    remove_quote_mark = lambda line: line.removeprefix('> ')
     return "\n".join(map(remove_quote_mark, block.splitlines()))
 
 def extract_unordered_list_items(block: str):
