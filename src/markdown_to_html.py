@@ -18,8 +18,8 @@ def markdown_to_html_node(markdown):
                 children.append(p)
             case BlockType.HEADING:
                 heading_level, heading_text = destruct_heading(block)
-                c = LeafNode(None, heading_text)
-                h = ParentNode('h' + str(heading_level), children=[c])
+                heading_nodes = map(text_node_to_html_node, text_to_textnodes(heading_text))
+                h = ParentNode('h' + str(heading_level), children=heading_nodes)
                 children.append(h)
             case BlockType.CODE:
                 code = extract_code(block)
