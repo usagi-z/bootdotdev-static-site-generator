@@ -1,14 +1,19 @@
 import os
 import shutil
+import sys
 from extract_title import extract_title
 from markdown_to_html import markdown_to_html_node
 from text_to_textnodes import *
 from textnode import *
 
 def main():
-    copy_while_clobbering('static', 'public')
-    generate_pages_recursive("content", "template.html", "public")
-    # pass
+    if len(sys.argv) == 1:
+        basepath = "/"
+    else:
+        basepath = sys.argv[1]
+    out_dir = 'docs'
+    copy_while_clobbering('static', out_dir)
+    generate_pages_recursive("content", "template.html", out_dir, basepath)
 
 def is_markdown_file(path):
     if not os.path.isfile(path):
@@ -20,7 +25,7 @@ def switch_extension_to_html(path):
     head, ext = os.path.splitext(path)
     return head + ".html"
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     def walk_dirs(current_path):
         in_path = os.path.join(dir_path_content, current_path)
         if os.path.exists(in_path):
@@ -28,12 +33,12 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
                 path = os.path.join(in_path, item)
                 if is_markdown_file(path):
                     out_path = os.path.join(dest_dir_path, current_path, switch_extension_to_html(item))
-                    generate_page(path, template_path, out_path)
+                    generate_page(path, template_path, out_path, basepath)
                 elif os.path.isdir(path):
                     walk_dirs(os.path.join(current_path, item))
     walk_dirs("")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path) as f:
         markdown = f.read()
@@ -42,6 +47,7 @@ def generate_page(from_path, template_path, dest_path):
     content = markdown_to_html_node(markdown).to_html()
     title = extract_title(markdown)
     output = template.replace("{{ Title }}", title).replace("{{ Content }}", content)
+    output = output.replace('href="/', f'href"{basepath}').replace('src="/', f"src=\"{basepath}")
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
     with open(dest_path, "w") as f:
         f.write(output)
